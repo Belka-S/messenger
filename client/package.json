@@ -1,5 +1,6 @@
 {
-  "name": "aion-test",
+  "name": "messenger",
+  "description": "client",
   "version": "0.1.0",
   "private": true,
   "scripts": {
