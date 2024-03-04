@@ -1,12 +1,14 @@
 import Section from '@/components/ui/Section';
-import H1 from '@/components/ui/Typography/H1';
+import H2 from '@/components/ui/Typography/H2';
 
 import s from './index.module.scss';
+import SignupForm from './SignupForm';
 
 const SignupPage = () => {
   return (
     <Section className={s.signup}>
-      <H1>SignupPage</H1>
+      <H2>Sign Up</H2>
+      <SignupForm />
     </Section>
   );
 };

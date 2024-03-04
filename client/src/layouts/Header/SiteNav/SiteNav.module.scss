@@ -22,7 +22,7 @@
     display: block;
     content: '';
     border-radius: 2px;
-    background-color: var(--accent-color);
+    background-color: var(--hover-color);
     transition: width 250ms;
   }
 
@@ -45,7 +45,7 @@
     display: block;
     content: '';
     border-radius: 2px;
-    background-color: var(--accent-color);
+    background-color: var(--hover-color);
     transition: width 250ms;
   }
 }

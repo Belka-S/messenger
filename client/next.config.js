@@ -3,7 +3,7 @@
 const path = require('path');
 
 const nextConfig = {
-  output: 'export',
+  // output: 'export',
   images: {
     unoptimized: false,
     // domains: [ 'images.unsplash.com', 'res.cloudinary.com', 'img.etimg.com', 'assets.vogue.com', 'm.media-amazon.com', 'upload.wikimedia.org', ],

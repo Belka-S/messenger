@@ -1,12 +1,14 @@
 import Section from '@/components/ui/Section';
-import H1 from '@/components/ui/Typography/H1';
+import H2 from '@/components/ui/Typography/H2';
 
 import s from './index.module.scss';
+import SigninForm from './SigninForm';
 
 const SigninPage = () => {
   return (
     <Section className={s.signin}>
-      <H1>SigninPage</H1>
+      <H2>Sign In</H2>
+      <SigninForm />
     </Section>
   );
 };
