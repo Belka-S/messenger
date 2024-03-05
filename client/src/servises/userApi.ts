@@ -3,7 +3,8 @@ import { apiClient, token } from './apiClient';
 export type Credentials = {
   name?: string;
   email: string;
-  password: string;
+  password?: string;
+  verificationCode?: string;
 };
 
 export const register = async (credentials: Credentials) => {
@@ -24,8 +25,9 @@ export const logout = async () => {
   return data;
 };
 
-export const verifyEmail = async (code: string) => {
-  const { data } = await apiClient.post('/auth/verify', code);
+export const verifyEmail = async (credentials: Credentials) => {
+  const { data } = await apiClient.post('/auth/verify', credentials);
+  console.log('data: ', data);
   return data;
 };
 

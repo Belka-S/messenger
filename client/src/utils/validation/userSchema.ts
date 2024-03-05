@@ -21,7 +21,7 @@ const email = Yup.string()
   .required('is required')
   .matches(...pattern(regExp.EMAIL));
 const password = Yup.string().min(6, 'is too short').required('is required');
-const code = Yup.number().required('is required').typeError('must be a number');
+const code = Yup.string().required('is required');
 
 // Avatar
 const MAX_SIZE = 1024 * 1024;

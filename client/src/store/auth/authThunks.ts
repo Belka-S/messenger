@@ -46,9 +46,9 @@ export const logoutThunk = createAppAsyncThunk(
 
 export const verifyEmailThunk = createAppAsyncThunk(
   'auth/verify',
-  async (code: string, thunkAPI) => {
+  async (credentials: API.Credentials, thunkAPI) => {
     try {
-      return await API.verifyEmail(code);
+      return await API.verifyEmail(credentials);
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.message);
     }

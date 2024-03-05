@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import Button from '@/components/ui/Button';
 import { loginThunk } from '@/store/auth/authThunks';
 import { useAppDispatch } from '@/store/hooks';
+import { useAuth } from '@/utils/hooks';
 import { signinSchema } from '@/utils/validation';
 
 import s from './index.module.scss';
@@ -22,18 +23,23 @@ type Inputs = {
 const SigninForm = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const { user } = useAuth();
 
   const resolver: Resolver<Inputs> = yupResolver(signinSchema);
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>({ mode: 'onBlur', resolver });
+  } = useForm<Inputs>({
+    resolver,
+    mode: 'onBlur',
+    defaultValues: { email: user.email },
+  });
 
   const onSubmit: SubmitHandler<Inputs> = data => {
     dispatch(loginThunk(data))
       .unwrap()
-      .then(() => router.push('/'))
+      .then(pld => pld.result.user.verifiedEmail && router.push('/'))
       .catch(err => err.includes('401') && toast.error('Unauthorized'));
   };
 

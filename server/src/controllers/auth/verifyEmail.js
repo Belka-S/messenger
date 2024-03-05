@@ -18,7 +18,7 @@ const verifyEmail = ctrlWrapper(async (req, res) => {
   const candidate = { verifiedEmail: true, verificationCode: null };
   await updateDoc(userRef, { ...candidate });
 
-  const newUser = getDocByRef(userRef);
+  const newUser = await getDocByRef(userRef);
   if (!newUser.verifiedEmail) {
     throw HttpError(403, `Failed to verify ${user.email}`);
   }

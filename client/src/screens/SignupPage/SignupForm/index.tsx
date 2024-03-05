@@ -34,7 +34,6 @@ const SignupForm = () => {
   const onSubmit: SubmitHandler<Inputs> = data => {
     dispatch(registerThunk(data))
       .unwrap()
-      .then(() => router.push('/'))
       .catch(err => err.includes('401') && toast.error('Unauthorized'));
   };
 
