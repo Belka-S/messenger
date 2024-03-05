@@ -27,7 +27,6 @@ export const logout = async () => {
 
 export const verifyEmail = async (credentials: Credentials) => {
   const { data } = await apiClient.post('/auth/verify', credentials);
-  console.log('data: ', data);
   return data;
 };
 

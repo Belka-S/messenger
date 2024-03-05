@@ -6,11 +6,16 @@ import { MouseEvent, useState } from 'react';
 
 import Button from '@/components/ui/Button';
 import SvgIcon from '@/components/ui/SvgIcon';
+import { logoutThunk } from '@/store/auth/authThunks';
+import { useAppDispatch } from '@/store/hooks';
+import { useAuth } from '@/utils/hooks';
 
 import s from './Header.module.scss';
 import Menu from './Menu';
 
 const Header = () => {
+  const dispatch = useAppDispatch();
+  const { user, isLoggedIn } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
 
   const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
@@ -30,11 +35,24 @@ const Header = () => {
               height={60}
             />
           </Link>
+
+          {isLoggedIn && (
+            <Button
+              className={s.header__user}
+              onClick={() => dispatch(logoutThunk())}
+              type="button"
+              size="m"
+              variant="transparent"
+              label={user.email}
+            >
+              <SvgIcon id="logout" width={20} height={20} />
+            </Button>
+          )}
+
           <Button
-            className={s.header__btn}
+            className={s.header__menu}
             onClick={handleClick}
             type="button"
-            // variant="outlined"
             size="m"
           >
             <SvgIcon id="burger" width={20} height={20} />
