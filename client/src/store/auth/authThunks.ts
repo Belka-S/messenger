@@ -111,3 +111,14 @@ export const deleteUserThunk = createAppAsyncThunk(
     }
   },
 );
+
+export const getAllUsersThunk = createAppAsyncThunk(
+  'users/all',
+  async (_, thunkAPI) => {
+    try {
+      return await API.getAllUsers();
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  },
+);

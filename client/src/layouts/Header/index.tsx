@@ -7,11 +7,12 @@ import { MouseEvent, useState } from 'react';
 import OvalLoader from '@/components/Loader/OvalLoader';
 import Button from '@/components/ui/Button';
 import SvgIcon from '@/components/ui/SvgIcon';
+import H2 from '@/components/ui/Typography/H2';
 import { logoutThunk } from '@/store/auth/authThunks';
 import { useAppDispatch } from '@/store/hooks';
 import { useAuth } from '@/utils/hooks';
 
-import s from './Header.module.scss';
+import s from './index.module.scss';
 import Menu from './Menu';
 
 const Header = () => {
@@ -30,34 +31,37 @@ const Header = () => {
         <div className={classNames('container', s.header__wrap)}>
           <Link href={'/'} onClick={() => setIsOpen(false)}>
             <SvgIcon
-              className={s.message}
+              className={isAuth ? s.active : s.messenger}
               id="message"
               width={60}
               height={60}
             />
           </Link>
 
-          {isAuth && (
-            <Button
-              className={s.header__user}
-              onClick={() => dispatch(logoutThunk())}
-              type="button"
-              size="m"
-              variant="transparent"
-              label={user.email}
-            >
-              <SvgIcon id="logout" width={20} height={20} />
-            </Button>
-          )}
+          {isAuth && <H2 className={s.messenger}>Messenger</H2>}
 
-          <Button
-            className={s.header__menu}
-            onClick={handleClick}
-            type="button"
-            size="m"
-          >
-            <SvgIcon id="burger" width={20} height={20} />
-          </Button>
+          <div className={s.header__menu}>
+            {isAuth ? (
+              <Button
+                onClick={() => dispatch(logoutThunk())}
+                type="button"
+                size="m"
+                variant="transparent"
+                label={user.email}
+              >
+                <SvgIcon id="logout" width={20} height={20} />
+              </Button>
+            ) : (
+              <Button
+                className={s.header__menu_btn}
+                onClick={handleClick}
+                type="button"
+                size="m"
+              >
+                <SvgIcon id="burger" width={20} height={20} />
+              </Button>
+            )}
+          </div>
         </div>
       </header>
 

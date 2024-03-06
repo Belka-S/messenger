@@ -1,3 +1,4 @@
+const getAll = require('./getAll');
 const getUser = require('./getUser');
 const login = require('./login');
 const logout = require('./logout');
@@ -6,6 +7,7 @@ const register = require('./register');
 const verifyEmail = require('./verifyEmail');
 
 module.exports = {
+  getAll,
   getUser,
   login,
   logout,

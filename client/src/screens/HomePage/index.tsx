@@ -1,17 +1,28 @@
 'use client';
 
+import classNames from 'classnames';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import Section from '@/components/ui/Section';
-import H1 from '@/components/ui/Typography/H1';
 import { useAuth } from '@/utils/hooks';
 
+import Chat from './Chat';
+import ChatForm from './ChatForm';
+import ChatUsers from './ChatUsers';
 import s from './index.module.scss';
+
+export interface IMsg {
+  ms: string;
+  date: string;
+  owner: string;
+  message: string;
+}
 
 const HomePage = () => {
   const router = useRouter();
   const { isAuth } = useAuth();
+  const [msgArr, setMsgArr] = useState<IMsg[]>([]);
 
   useEffect(() => {
     isAuth ? router.push('/') : router.push('/signin');
@@ -19,9 +30,16 @@ const HomePage = () => {
 
   if (isAuth)
     return (
-      <Section className={s.home}>
-        <H1>Messenger</H1>
-      </Section>
+      <div className={classNames('container', s.home)}>
+        <Section>
+          <ChatForm setMsgArr={setMsgArr} />
+          <ChatUsers />
+        </Section>
+
+        <Section>
+          <Chat msgArr={msgArr} />
+        </Section>
+      </div>
     );
 };
 

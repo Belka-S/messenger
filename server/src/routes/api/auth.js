@@ -11,6 +11,7 @@ router.post('/register', validate.users.registerSchema, ctrl.auth.register);
 router.post('/login', validate.users.loginSchema, ctrl.auth.login);
 router.post('/logout', authenticate, ctrl.auth.logout);
 router.get('/refresh', authenticate, ctrl.auth.getUser);
+router.get('/users', authenticate, ctrl.auth.getAll);
 
 // Refresh token
 router.post('/refresh', ctrl.auth.refreshToken);

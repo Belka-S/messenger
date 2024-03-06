@@ -7,7 +7,7 @@ import { FC } from 'react';
 
 import { useAuth } from '@/utils/hooks';
 
-import s from './SiteNav.module.scss';
+import s from './index.module.scss';
 
 interface ISiteNavProps {
   className?: string;
@@ -27,7 +27,7 @@ const SiteNav: FC<ISiteNavProps> = ({ className }) => {
     <nav className={classNames(s.nav, className)}>
       {isAuth && (
         <Link className={setClassName('/')} href={'/'}>
-          Messenger
+          Home
         </Link>
       )}
       <Link className={setClassName('/signin')} href={'/signin'}>

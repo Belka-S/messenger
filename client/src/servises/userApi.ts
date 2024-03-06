@@ -55,3 +55,8 @@ export const deleteUser = async () => {
   const { data } = await apiClient.delete('/users/delete');
   return data;
 };
+
+export const getAllUsers = async () => {
+  const { data } = await apiClient.get('/auth/users');
+  return data;
+};

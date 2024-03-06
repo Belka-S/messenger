@@ -9,19 +9,26 @@
   justify-content: space-between;
 }
 
-.message {
-  fill: #f39718;
+.messenger {
+  margin: 0;
+  fill: var(--accent-color);
+
   &:hover {
     fill: var(--hover-color);
   }
 }
 
-.header__user {
-  margin-left: auto;
-  margin-right: 10px;
+.active {
+  fill: #f39718;
 }
 
 .header__menu {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header__menu_btn {
   border-radius: 50%;
   padding: 2px;
 }

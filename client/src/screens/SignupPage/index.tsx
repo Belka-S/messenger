@@ -1,5 +1,6 @@
 'use client';
 
+import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 
 import CodeForm from '@/components/CodeForm';
@@ -20,7 +21,7 @@ const SignupPage = () => {
   }, [user]);
 
   return (
-    <Section className={s.signup}>
+    <div className={classNames('container', s.signup)}>
       <H2>Sign Up</H2>
 
       <SignupForm />
@@ -30,7 +31,7 @@ const SignupPage = () => {
           <CodeForm />
         </Modal>
       )}
-    </Section>
+    </div>
   );
 };
 

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 
 import SiteNav from '../SiteNav';
-import s from './Menu.module.scss';
+import s from './index.module.scss';
 
 interface IMenyProps {
   isOpen: boolean;

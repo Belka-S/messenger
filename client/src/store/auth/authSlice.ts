@@ -19,6 +19,7 @@ const thunkArr = [
   TNK.updateUserThunk,
   TNK.deleteUserThunk,
   TNK.refreshUserThunk,
+  TNK.getAllUsersThunk,
 ];
 
 const fn = (type: 'pending' | 'fulfilled' | 'rejected') =>
@@ -48,7 +49,14 @@ const handleAuthSucsess = (
   return { ...state, accessToken, refreshToken };
 };
 
+const handleGetAllUsersSucsess = (
+  state: IUserInitialState[],
+  action: PayloadAction<any>,
+) => action.payload.result.users;
+
 // fulfilled slice
+
+// auth
 const authUserSlice = createSlice({
   name: 'user',
   initialState: userInitialState,
@@ -71,6 +79,18 @@ const authUserSlice = createSlice({
       // update profile
       .addCase(TNK.updateUserThunk.fulfilled, handleLoginSucsess)
       .addCase(TNK.deleteUserThunk.fulfilled, handleLogoutSucsess);
+  },
+});
+
+// users
+const allUsersSlice = createSlice({
+  name: 'allUsers',
+  initialState: [],
+  reducers: {},
+  extraReducers: builder => {
+    builder
+      // get users
+      .addCase(TNK.getAllUsersThunk.fulfilled, handleGetAllUsersSucsess);
   },
 });
 
@@ -115,6 +135,7 @@ const authErrorSlice = createSlice({
 
 export const authReducer = combineReducers({
   user: authUserSlice.reducer,
+  allUsers: allUsersSlice.reducer,
   isLoading: authIsRefreshingSlice.reducer,
   isRefreshing: authIsLoadingSlice.reducer,
   error: authErrorSlice.reducer,

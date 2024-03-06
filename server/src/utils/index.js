@@ -1,4 +1,5 @@
 const createMsg = require('./createMsg');
+const getDate = require('./getDate');
 const getDocById = require('./getDocById');
 const getDocByRef = require('./getDocByRef');
 const getDocsList = require('./getDocsList');
@@ -12,6 +13,7 @@ const sendMail = require('./sendMail');
 
 module.exports = {
   createMsg,
+  getDate,
   getDocById,
   getDocByRef,
   getDocsList,

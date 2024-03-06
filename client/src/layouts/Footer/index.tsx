@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 
-import s from './Footer.module.scss';
+import s from './indax.module.scss';
 
 const Footer = () => {
   return (
