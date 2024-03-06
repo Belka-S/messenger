@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import Link from 'next/link';
 import { MouseEvent, useState } from 'react';
 
+import OvalLoader from '@/components/Loader/OvalLoader';
 import Button from '@/components/ui/Button';
 import SvgIcon from '@/components/ui/SvgIcon';
 import { logoutThunk } from '@/store/auth/authThunks';
@@ -15,7 +16,7 @@ import Menu from './Menu';
 
 const Header = () => {
   const dispatch = useAppDispatch();
-  const { user, isLoggedIn } = useAuth();
+  const { user, isAuth, isLoading, isRefreshing } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
 
   const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
@@ -36,7 +37,7 @@ const Header = () => {
             />
           </Link>
 
-          {isLoggedIn && (
+          {isAuth && (
             <Button
               className={s.header__user}
               onClick={() => dispatch(logoutThunk())}
@@ -61,6 +62,8 @@ const Header = () => {
       </header>
 
       <Menu isOpen={isOpen} setIsOpen={setIsOpen} />
+
+      {isLoading && isRefreshing && <OvalLoader />}
     </>
   );
 };
