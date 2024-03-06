@@ -6,7 +6,9 @@ const Footer = () => {
   return (
     <footer className={s.footer}>
       <div className={classNames('container', s.footer__wrap)}>
-        <h2>Footer</h2>
+        <a href="https://cv-it.vercel.app" target="blank">
+          developed by <span>BS</span>
+        </a>
       </div>
     </footer>
   );

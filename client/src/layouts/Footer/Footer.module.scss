@@ -1,8 +1,13 @@
 .footer {
   padding: 10px;
-  border-top: 1px solid var(--border-color);
 }
 
 .footer__wrap {
-  text-align: center;
+  text-align: right;
+
+  & span {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--hover-color);
+  }
 }
