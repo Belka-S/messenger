@@ -13,27 +13,36 @@ import s from './index.module.scss';
 
 interface IChatProps {
   msgArr: IMsg[];
+  partner: IUserInitialState;
 }
 
-const Chat: FC<IChatProps> = ({ msgArr }) => {
+const Chat: FC<IChatProps> = ({ msgArr, partner }) => {
   // const dispatch = useAppDispatch();
-  // const { allUsers } = useAuth();
+  const { user } = useAuth();
 
   // useEffect(() => {
   //   dispatch(getAllUsersThunk());
   // }, [dispatch]);
 
+  const filterMsgs = () => {
+    const filtredMsgs = msgArr.filter(el => {
+      return (
+        (partner.email === el.partner && user.email === el.owner) ||
+        (partner.email === el.owner && user.email === el.partner)
+      );
+    });
+    return filtredMsgs;
+  };
+
   return (
-    <>
-      <H4>Chat</H4>
-      <ul>
-        {msgArr.map((el: IMsg) => (
-          <li key={el.ms}>
-            {el.date} - {el.message} - {el.owner}
-          </li>
-        ))}
-      </ul>
-    </>
+    <ul>
+      {filterMsgs().map((el: IMsg) => (
+        <li key={el.ms}>
+          {el.date} - {el.message}
+          {el.owner !== user.email && ` - ${el.owner}`}
+        </li>
+      ))}
+    </ul>
   );
 };
 

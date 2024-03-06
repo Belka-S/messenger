@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import Button from '@/components/ui/Button';
 import H4 from '@/components/ui/Typography/H4';
 import { socket } from '@/servises/apiSocket.io';
+import { IUserInitialState } from '@/store/auth/initialState';
 import { useAppDispatch } from '@/store/hooks';
 import { getDate } from '@/utils/helpers';
 import { useAuth } from '@/utils/hooks';
@@ -24,9 +25,10 @@ export type Inputs = {
 
 interface IChatFormProps {
   setMsgArr: (f: (state: IMsg[]) => IMsg[]) => void;
+  partner: IUserInitialState;
 }
 
-const ChatForm: FC<IChatFormProps> = ({ setMsgArr }) => {
+const ChatForm: FC<IChatFormProps> = ({ setMsgArr, partner }) => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { user } = useAuth();
@@ -43,7 +45,7 @@ const ChatForm: FC<IChatFormProps> = ({ setMsgArr }) => {
     socket.on('chatMessage', msg => {
       setMsgArr((state: IMsg[]) => [...state, msg]);
     });
-    socket.on('connect', () => console.log('Connected to WS-server'));
+    // socket.on('connect', () => console.log('Connected to WS-server'));
   }, [setMsgArr]);
 
   const onSubmit: SubmitHandler<Inputs> = async ({ message }) => {
@@ -57,6 +59,7 @@ const ChatForm: FC<IChatFormProps> = ({ setMsgArr }) => {
       ms: getDate().ms.toString(),
       date: getDate().format,
       owner: user.email,
+      partner: partner.email,
       message,
     };
     setMsgArr((state: IMsg[]) => [...state, msg]);
@@ -65,10 +68,10 @@ const ChatForm: FC<IChatFormProps> = ({ setMsgArr }) => {
     reset();
   };
 
+  const isChat = user.email !== partner.email;
+
   return (
     <form className={s.form} onSubmit={handleSubmit(onSubmit)}>
-      <H4>{`Chat with ${user.email}`}</H4>
-
       <label className={s.label}>
         Message <span> {errors.message?.message}</span>
         <input
@@ -79,6 +82,10 @@ const ChatForm: FC<IChatFormProps> = ({ setMsgArr }) => {
       </label>
 
       <Button type="submit" size="m" label="Send" />
+
+      <H4>
+        {isChat ? `Chat with ${partner.email}` : 'Choose someone to chat with'}
+      </H4>
     </form>
   );
 };

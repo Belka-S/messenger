@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import Section from '@/components/ui/Section';
+import { IUserInitialState } from '@/store/auth/initialState';
 import { useAuth } from '@/utils/hooks';
 
 import Chat from './Chat';
@@ -16,13 +17,15 @@ export interface IMsg {
   ms: string;
   date: string;
   owner: string;
+  partner: string | null;
   message: string;
 }
 
 const HomePage = () => {
   const router = useRouter();
-  const { isAuth } = useAuth();
+  const { user, isAuth } = useAuth();
   const [msgArr, setMsgArr] = useState<IMsg[]>([]);
+  const [partner, setPartner] = useState<IUserInitialState>(user);
 
   useEffect(() => {
     isAuth ? router.push('/') : router.push('/signin');
@@ -32,12 +35,12 @@ const HomePage = () => {
     return (
       <div className={classNames('container', s.home)}>
         <Section>
-          <ChatForm setMsgArr={setMsgArr} />
-          <ChatUsers />
+          <ChatForm setMsgArr={setMsgArr} partner={partner} />
+          <ChatUsers setPartner={setPartner} />
         </Section>
 
         <Section>
-          <Chat msgArr={msgArr} />
+          <Chat msgArr={msgArr} partner={partner} />
         </Section>
       </div>
     );
