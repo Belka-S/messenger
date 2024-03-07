@@ -63,11 +63,12 @@ const elementItemsSlice = createSlice({
     cleanElement: () => [],
   },
   extraReducers: builder => {
-    builder.addCase(TNK.fetchElementsThunk.fulfilled, handleFetchElements);
-    // .addCase(TNK.getElementThunk.fulfilled, handleGetElement)
-    // .addCase(TNK.addElementThunk.fulfilled, handleAddElement)
-    // .addCase(TNK.updateElementThunk.fulfilled, handleUpdateElement)
-    // .addCase(TNK.deleteElementThunk.fulfilled, handleDeleteElement);
+    builder
+      .addCase(TNK.fetchElementsThunk.fulfilled, handleFetchElements)
+      // .addCase(TNK.getElementThunk.fulfilled, handleGetElement)
+      // .addCase(TNK.addElementThunk.fulfilled, handleAddElement)
+      .addCase(TNK.updateElementThunk.fulfilled, handleUpdateElement)
+      .addCase(TNK.deleteElementThunk.fulfilled, handleDeleteElement);
   },
 });
 

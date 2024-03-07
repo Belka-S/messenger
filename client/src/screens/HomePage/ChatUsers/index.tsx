@@ -39,21 +39,22 @@ const ChatUsers: FC<IChatUsersProps> = ({
         {allUsers
           .filter((el: IUserInitialState) => el.email !== user.email)
           .map((el: IUserInitialState) => (
-            <li className={s.users__item} key={el.email}>
+            <li
+              className={s.users__item}
+              key={el.email}
+              onClick={e => {
+                setPartner(el);
+                e.currentTarget.blur();
+              }}
+            >
               <H6 className={s.item__name} fontWeight={500}>{`${el.name}`}</H6>
 
-              <span className={s.users__count}>{`[ ${
-                filterMsgs(el).length
-              } ]`}</span>
+              <span className={s.users__count}>{filterMsgs(el).length}</span>
 
               <Button
                 className={s.users__btn}
                 size="s"
                 variant={el.email === partner.email ? 'default' : 'transparent'}
-                onClick={e => {
-                  setPartner(el);
-                  e.currentTarget.blur();
-                }}
               >
                 <span>{el.email}</span>
               </Button>

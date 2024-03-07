@@ -12,7 +12,7 @@ const createAppAsyncThunk = createAsyncThunk.withTypes<{
   extra: { s: string; n: number };
 }>();
 
-export const fetchElementsThunk = createAsyncThunk(
+export const fetchElementsThunk = createAppAsyncThunk(
   'elements/fetchElements',
   async (_, thunkAPI) => {
     try {
@@ -23,7 +23,7 @@ export const fetchElementsThunk = createAsyncThunk(
   },
 );
 
-export const getElementThunk = createAsyncThunk(
+export const getElementThunk = createAppAsyncThunk(
   'elements/fetchElements',
   async (element: IMsg, thunkAPI) => {
     try {
@@ -34,7 +34,7 @@ export const getElementThunk = createAsyncThunk(
   },
 );
 
-export const addElementThunk = createAsyncThunk(
+export const addElementThunk = createAppAsyncThunk(
   'elements/addElement',
   async (element: IMsg, thunkAPI) => {
     try {
@@ -45,7 +45,7 @@ export const addElementThunk = createAsyncThunk(
   },
 );
 
-export const updateElementThunk = createAsyncThunk(
+export const updateElementThunk = createAppAsyncThunk(
   'elements/updateElement',
   async (element: IMsg, thunkAPI) => {
     try {
@@ -56,7 +56,7 @@ export const updateElementThunk = createAsyncThunk(
   },
 );
 
-export const deleteElementThunk = createAsyncThunk(
+export const deleteElementThunk = createAppAsyncThunk(
   'elements/deleteElement',
   async (element: IMsg, thunkAPI) => {
     try {

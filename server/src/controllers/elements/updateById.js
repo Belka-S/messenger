@@ -5,7 +5,7 @@ const { getDocByRef } = require('../../utils');
 const { ctrlWrapper } = require('../../decorators');
 
 const updateById = ctrlWrapper(async (req, res) => {
-  const { id } = req.params;
+  const { id } = req.body;
   const elRef = doc(Elements, id);
 
   await updateDoc(elRef, { ...req.body });

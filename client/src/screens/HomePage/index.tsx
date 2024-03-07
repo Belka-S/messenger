@@ -25,6 +25,7 @@ const HomePage = () => {
   const router = useRouter();
   const { user, isAuth } = useAuth();
   const { msgHistory } = useElements();
+  const [initialMsg, setInitialMsg] = useState<IMsg | null>(null);
   const [msgArr, setMsgArr] = useState<IMsg[]>([]);
   const [partner, setPartner] = useState<IUserInitialState>(user);
 
@@ -46,7 +47,12 @@ const HomePage = () => {
     return (
       <div className={classNames('container', s.home)}>
         <Section>
-          <ChatForm setMsgArr={setMsgArr} partner={partner} />
+          <ChatForm
+            setMsgArr={setMsgArr}
+            partner={partner}
+            initialMsg={initialMsg}
+            setInitialMsg={setInitialMsg}
+          />
           <ChatUsers
             filterMsgs={filterMsgs}
             setPartner={setPartner}
@@ -55,7 +61,11 @@ const HomePage = () => {
         </Section>
 
         <Section>
-          <Chat filterMsgs={filterMsgs} partner={partner} />
+          <Chat
+            filterMsgs={filterMsgs}
+            partner={partner}
+            setInitialMsg={setInitialMsg}
+          />
         </Section>
       </div>
     );

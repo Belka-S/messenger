@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import Button from '@/components/ui/Button';
 import { socket } from '@/servises/apiSocket.io';
 import { IUserInitialState } from '@/store/auth/initialState';
+import { updateElementThunk } from '@/store/elements/elementThunks';
 import { useAppDispatch } from '@/store/hooks';
 import { getDate } from '@/utils/helpers';
 import { useAuth } from '@/utils/hooks';
@@ -25,11 +26,15 @@ export type Inputs = {
 interface IChatFormProps {
   setMsgArr: (f: (state: IMsg[]) => IMsg[]) => void;
   partner: IUserInitialState;
+  initialMsg: IMsg | null;
+  setInitialMsg: (initialMsg: IMsg | null) => void;
 }
 
-const ChatForm: FC<IChatFormProps> = ({ setMsgArr, partner }) => {
+const ChatForm: FC<IChatFormProps> = props => {
+  const { setMsgArr, partner, initialMsg, setInitialMsg } = props;
+  console.log('qwe: ', initialMsg);
+
   const dispatch = useAppDispatch();
-  const router = useRouter();
   const { user } = useAuth();
 
   const resolver: Resolver<Inputs> = yupResolver(messageSchema);
@@ -41,23 +46,31 @@ const ChatForm: FC<IChatFormProps> = ({ setMsgArr, partner }) => {
   } = useForm<Inputs>({ mode: 'onBlur', resolver });
 
   useEffect(() => {
+    // socket.on('connect', () => console.log('Connected to WS-server'));
     socket.on('chatMessage', msg => {
       setMsgArr((state: IMsg[]) => [...state, msg]);
     });
-    // socket.on('connect', () => console.log('Connected to WS-server'));
   }, [setMsgArr]);
 
   const onSubmit: SubmitHandler<Inputs> = async ({ message }) => {
-    const msg: IMsg = {
+    let msg: IMsg = {
       id: getDate().ms,
       createdAt: getDate().format,
       owner: user.email,
       partner: partner.email,
       message,
     };
-    setMsgArr((state: IMsg[]) => [...state, msg]);
-    socket.emit('chatMessage', msg);
 
+    if (initialMsg) {
+      console.log('initialMsg: ', initialMsg);
+      msg = { ...initialMsg, message };
+      dispatch(updateElementThunk(msg));
+    } else {
+      socket.emit('chatMessage', msg);
+      setMsgArr((state: IMsg[]) => [...state, msg]);
+    }
+
+    setInitialMsg(null);
     reset();
   };
 
@@ -75,6 +88,7 @@ const ChatForm: FC<IChatFormProps> = ({ setMsgArr, partner }) => {
         )}
         <span className={s.label__error}> {errors.message?.message}</span>
         <input
+          id="msg-form"
           placeholder=""
           className={classNames(s.input, errors.message ? s.invalid : s.valid)}
           {...register('message', { required: true })}
