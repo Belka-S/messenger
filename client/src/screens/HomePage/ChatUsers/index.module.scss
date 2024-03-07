@@ -1,3 +1,26 @@
+.users__title {
+  margin-bottom: 15px;
+  margin-top: 30px;
+}
+
+.users__item {
+  display: grid;
+  grid-template-columns: 3fr 1fr 10fr;
+
+  justify-items: center;
+  align-items: center;
+
+  & .item__name {
+    justify-self: left;
+    text-transform: capitalize;
+  }
+}
+
 .users__btn {
-  padding-inline: 0;
+  width: 100%;
+  border-radius: 15px;
+}
+
+.users__count {
+  justify-self: left;
 }

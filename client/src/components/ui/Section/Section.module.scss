@@ -1,13 +1,13 @@
 @import 'mixins';
 
 .section {
-  padding-block: 50px;
+  padding-block: 5px;
 
   @include tablet {
     padding-block: 10px;
   }
 
   @include desktop {
-    padding-block: 20px;
+    padding-block: 15px;
   }
 }

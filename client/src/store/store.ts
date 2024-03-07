@@ -1,11 +1,13 @@
 import { applyMiddleware, compose, configureStore } from '@reduxjs/toolkit';
 
 import { authReducer } from './auth/authSlice';
+import { elementsReducer } from './elements/elementSlice';
 
 const makeStore = () => {
   return configureStore({
     reducer: {
       auth: authReducer,
+      elements: elementsReducer,
     },
   });
 };

@@ -2,13 +2,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 250ms;
+  transition: background-color 250ms, color 250ms;
 
   cursor: pointer;
   background: none;
   border-radius: var(--indent-xs);
   font-weight: 700;
-  font-size: 18px;
 }
 
 // size
@@ -17,6 +16,7 @@
   height: 30px;
   padding: 8px;
   gap: 8px;
+  font-size: 16px;
 }
 
 .m {
@@ -24,6 +24,7 @@
   height: 40px;
   padding: 10px;
   gap: 10px;
+  font-size: 18px;
 }
 
 .l {
@@ -31,6 +32,7 @@
   height: 50px;
   padding: 12px;
   gap: 12px;
+  font-size: 20px;
 }
 
 // variant
@@ -58,6 +60,11 @@
 .transparent {
   border: none;
   color: var(--black-color);
+
+  &:hover,
+  &:focus {
+    color: var(--hover-color);
+  }
 }
 
 .disabled {

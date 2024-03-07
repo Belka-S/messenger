@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 
 import Section from '@/components/ui/Section';
 import { IUserInitialState } from '@/store/auth/initialState';
-import { useAuth } from '@/utils/hooks';
+import { useAuth, useElements } from '@/utils/hooks';
 
 import Chat from './Chat';
 import ChatForm from './ChatForm';
@@ -14,8 +14,8 @@ import ChatUsers from './ChatUsers';
 import s from './index.module.scss';
 
 export interface IMsg {
-  ms: string;
-  date: string;
+  id: string;
+  createdAt: string;
   owner: string;
   partner: string | null;
   message: string;
@@ -24,6 +24,7 @@ export interface IMsg {
 const HomePage = () => {
   const router = useRouter();
   const { user, isAuth } = useAuth();
+  const { msgHistory } = useElements();
   const [msgArr, setMsgArr] = useState<IMsg[]>([]);
   const [partner, setPartner] = useState<IUserInitialState>(user);
 
@@ -31,16 +32,30 @@ const HomePage = () => {
     isAuth ? router.push('/') : router.push('/signin');
   }, [isAuth, router]);
 
+  const filterMsgs = (partner: IUserInitialState) => {
+    const filtredMsgs = [...msgHistory, ...msgArr].filter(el => {
+      return (
+        (partner.email === el.partner && user.email === el.owner) ||
+        (partner.email === el.owner && user.email === el.partner)
+      );
+    });
+    return filtredMsgs;
+  };
+
   if (isAuth)
     return (
       <div className={classNames('container', s.home)}>
         <Section>
           <ChatForm setMsgArr={setMsgArr} partner={partner} />
-          <ChatUsers setPartner={setPartner} />
+          <ChatUsers
+            filterMsgs={filterMsgs}
+            setPartner={setPartner}
+            partner={partner}
+          />
         </Section>
 
         <Section>
-          <Chat msgArr={msgArr} partner={partner} />
+          <Chat filterMsgs={filterMsgs} partner={partner} />
         </Section>
       </div>
     );

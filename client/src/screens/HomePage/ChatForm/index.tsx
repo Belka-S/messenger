@@ -8,7 +8,6 @@ import { Resolver, SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
 import Button from '@/components/ui/Button';
-import H4 from '@/components/ui/Typography/H4';
 import { socket } from '@/servises/apiSocket.io';
 import { IUserInitialState } from '@/store/auth/initialState';
 import { useAppDispatch } from '@/store/hooks';
@@ -49,15 +48,9 @@ const ChatForm: FC<IChatFormProps> = ({ setMsgArr, partner }) => {
   }, [setMsgArr]);
 
   const onSubmit: SubmitHandler<Inputs> = async ({ message }) => {
-    // dispatch(verifyEmailThunk({ ...data, email: user.email }))
-    //   .unwrap()
-    //   .then(() => dispatch(refreshUserThunk()))
-    //   .then(() => router.push('/'))
-    //   .catch(err => err.includes('401') && toast.error('Unauthorized'));
-
     const msg: IMsg = {
-      ms: getDate().ms.toString(),
-      date: getDate().format,
+      id: getDate().ms,
+      createdAt: getDate().format,
       owner: user.email,
       partner: partner.email,
       message,
@@ -68,12 +61,19 @@ const ChatForm: FC<IChatFormProps> = ({ setMsgArr, partner }) => {
     reset();
   };
 
-  const isChat = user.email !== partner.email;
+  const isPartner = user.email !== partner.email;
 
   return (
     <form className={s.form} onSubmit={handleSubmit(onSubmit)}>
       <label className={s.label}>
-        Message <span> {errors.message?.message}</span>
+        Message
+        {isPartner && (
+          <>
+            &nbsp;for
+            <span className={s.label__name}>{` ${partner.name}`}</span>
+          </>
+        )}
+        <span className={s.label__error}> {errors.message?.message}</span>
         <input
           placeholder=""
           className={classNames(s.input, errors.message ? s.invalid : s.valid)}
@@ -82,10 +82,6 @@ const ChatForm: FC<IChatFormProps> = ({ setMsgArr, partner }) => {
       </label>
 
       <Button type="submit" size="m" label="Send" />
-
-      <H4>
-        {isChat ? `Chat with ${partner.email}` : 'Choose someone to chat with'}
-      </H4>
     </form>
   );
 };
