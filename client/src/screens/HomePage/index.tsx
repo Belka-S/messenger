@@ -18,6 +18,11 @@ import ChatForm from './ChatForm';
 import ChatUsers from './ChatUsers';
 import s from './index.module.scss';
 
+const socketURL =
+  process.env.NODE_ENV === 'development'
+    ? `${process.env.NEXT_PUBLIC_DEV_BACK_WS}`
+    : `${process.env.NEXT_PUBLIC_PROD_BACK_WS}`;
+
 export interface IMsg {
   id: string;
   createdAt: string;
@@ -37,6 +42,17 @@ const HomePage = () => {
   useEffect(() => {
     isAuth ? router.push('/') : router.push('/signin');
   }, [isAuth, router]);
+
+  useEffect(() => {
+    const socket = new WebSocket(socketURL);
+
+    return () => {
+      if (socket.readyState === 1) {
+        // <-- This is important
+        socket.close();
+      }
+    };
+  }, []);
 
   useEffect(() => {
     dispatch(fetchElementsThunk());
