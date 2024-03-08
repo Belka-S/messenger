@@ -11,10 +11,10 @@
 
 .messenger {
   margin: 0 !important;
-  fill: var(--accent-color);
+  fill: var(--accent-color) !important;
 
   &:hover {
-    fill: var(--hover-color);
+    fill: var(--hover-color) !important;
   }
 }
 
