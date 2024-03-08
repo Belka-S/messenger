@@ -11,7 +11,21 @@ const { Elements } = require('./db');
 const { PORT_WS = 5000 } = process.env;
 
 const httpServer = createServer();
-const io = new Server(httpServer, { cors: { origin: '*' } });
+// const io = new Server(httpServer, { cors: { origin: '*' } });
+
+// ------------------------- //
+
+const express = require('express');
+// const socketIO = require('socket.io');
+
+const server = express().listen(PORT_WS, () => console.log(`Listening on ${PORT_WS}`));
+
+const io = require('socket.io')(server, {
+  cors: {
+    origins: '*:*',
+    methods: ['GET', 'POST'],
+  },
+});
 
 /* eslint-disable no-console */
 io.on('connection', socket => {
@@ -27,13 +41,13 @@ io.on('connection', socket => {
   });
 });
 
-(() => {
-  try {
-    httpServer.listen(PORT_WS, () =>
-      console.log(`  -> Server WS:  http://localhost:${httpServer.address().port}`),
-    );
-  } catch (error) {
-    console.log(error.message);
-    process.exit(1);
-  }
-})();
+// (() => {
+//   try {
+//     httpServer.listen(PORT_WS, () =>
+//       console.log(`  -> Server WS:  http://localhost:${httpServer.address().port}`),
+//     );
+//   } catch (error) {
+//     console.log(error.message);
+//     process.exit(1);
+//   }
+// })();
