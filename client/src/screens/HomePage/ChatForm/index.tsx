@@ -2,15 +2,13 @@
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import classNames from 'classnames';
-import { useRouter } from 'next/navigation';
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import { Resolver, SubmitHandler, useForm } from 'react-hook-form';
-import { toast } from 'react-toastify';
 
 import Button from '@/components/ui/Button';
 import { socket } from '@/servises/apiSocket.io';
 import { IUserInitialState } from '@/store/auth/initialState';
-import { updateElementThunk } from '@/store/elements/elementThunks';
+import { addElement, updateElement } from '@/store/elements/elementSlice';
 import { useAppDispatch } from '@/store/hooks';
 import { getDate } from '@/utils/helpers';
 import { useAuth } from '@/utils/hooks';
@@ -24,16 +22,14 @@ export type Inputs = {
 };
 
 interface IChatFormProps {
-  setMsgArr: (f: (state: IMsg[]) => IMsg[]) => void;
   partner: IUserInitialState;
-  initialMsg: IMsg | null;
-  setInitialMsg: (initialMsg: IMsg | null) => void;
+  updatedMsg: IMsg | null;
+  setUpdatedMsg: (updatedMsg: IMsg | null) => void;
+  // setMsgArr: (f: (state: IMsg[]) => IMsg[]) => void;
 }
 
 const ChatForm: FC<IChatFormProps> = props => {
-  const { setMsgArr, partner, initialMsg, setInitialMsg } = props;
-  console.log('qwe: ', initialMsg);
-
+  const { partner, updatedMsg, setUpdatedMsg } = props;
   const dispatch = useAppDispatch();
   const { user } = useAuth();
 
@@ -45,13 +41,6 @@ const ChatForm: FC<IChatFormProps> = props => {
     formState: { errors },
   } = useForm<Inputs>({ mode: 'onBlur', resolver });
 
-  useEffect(() => {
-    // socket.on('connect', () => console.log('Connected to WS-server'));
-    socket.on('chatMessage', msg => {
-      setMsgArr((state: IMsg[]) => [...state, msg]);
-    });
-  }, [setMsgArr]);
-
   const onSubmit: SubmitHandler<Inputs> = async ({ message }) => {
     let msg: IMsg = {
       id: getDate().ms,
@@ -61,16 +50,15 @@ const ChatForm: FC<IChatFormProps> = props => {
       message,
     };
 
-    if (initialMsg) {
-      console.log('initialMsg: ', initialMsg);
-      msg = { ...initialMsg, message };
-      dispatch(updateElementThunk(msg));
+    if (updatedMsg) {
+      msg = { ...updatedMsg, message };
+      dispatch(updateElement(msg));
     } else {
-      socket.emit('chatMessage', msg);
-      setMsgArr((state: IMsg[]) => [...state, msg]);
+      dispatch(addElement(msg));
     }
 
-    setInitialMsg(null);
+    socket.emit('chatMessage', msg);
+    setUpdatedMsg(null);
     reset();
   };
 

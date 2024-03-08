@@ -1,18 +1,19 @@
 'use client';
 
 import classNames from 'classnames';
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import { toast } from 'react-toastify';
 
 import Button from '@/components/ui/Button';
 import SvgIcon from '@/components/ui/SvgIcon';
+import { socket } from '@/servises/apiSocket.io';
 import { IUserInitialState } from '@/store/auth/initialState';
 import {
   deleteElementThunk,
   fetchElementsThunk,
 } from '@/store/elements/elementThunks';
 import { useAppDispatch } from '@/store/hooks';
-import { useAuth, useElements } from '@/utils/hooks';
+import { useAuth } from '@/utils/hooks';
 
 import { IMsg } from '..';
 import s from './index.module.scss';
@@ -20,17 +21,12 @@ import s from './index.module.scss';
 interface IChatProps {
   filterMsgs: (partner: IUserInitialState) => IMsg[];
   partner: IUserInitialState;
-  setInitialMsg: (initialMsg: IMsg | null) => void;
+  setUpdatedMsg: (updatedMsg: IMsg | null) => void;
 }
 
-const Chat: FC<IChatProps> = ({ filterMsgs, partner, setInitialMsg }) => {
+const Chat: FC<IChatProps> = ({ filterMsgs, partner, setUpdatedMsg }) => {
   const dispatch = useAppDispatch();
   const { user } = useAuth();
-  const { msgHistory } = useElements();
-
-  useEffect(() => {
-    dispatch(fetchElementsThunk());
-  }, [dispatch]);
 
   const handleDeleteMsg = (el: IMsg) => {
     if (!confirm('Are you sure you want to delete message?')) {
@@ -38,12 +34,15 @@ const Chat: FC<IChatProps> = ({ filterMsgs, partner, setInitialMsg }) => {
     }
     dispatch(deleteElementThunk(el))
       .unwrap()
-      .then(() => dispatch(fetchElementsThunk()))
-      .catch(err => toast.error(err.message ? `${err.message}` : 'Error'));
+      .then(() => {
+        dispatch(fetchElementsThunk());
+        socket.emit('deleteMessage', el);
+      })
+      .catch(err => toast.error(err.message));
   };
 
-  const handleUpdateMsg = (msg: IMsg) => {
-    setInitialMsg(msg);
+  const handleupdatedMsg = (msg: IMsg) => {
+    setUpdatedMsg(msg);
     const formElInput = document.getElementById('msg-form') as HTMLInputElement;
     formElInput?.focus();
     formElInput.value = msg.message;
@@ -81,7 +80,7 @@ const Chat: FC<IChatProps> = ({ filterMsgs, partner, setInitialMsg }) => {
                   {isMyMsg && (
                     <Button
                       variant="transparent"
-                      onClick={() => handleUpdateMsg(msg)}
+                      onClick={() => handleupdatedMsg(msg)}
                     >
                       <SvgIcon id="edit" width={16} height={16} />
                     </Button>

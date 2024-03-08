@@ -15,11 +15,15 @@ const io = new Server(httpServer, { cors: { origin: '*' } });
 
 /* eslint-disable no-console */
 io.on('connection', socket => {
+  // add, update element
   socket.on('chatMessage', msg => {
     socket.broadcast.emit('chatMessage', msg);
-    // add element
     const elRef = doc(Elements, msg.id);
     setDoc(elRef, msg);
+  });
+  // delete element
+  socket.on('deleteMessage', msg => {
+    socket.broadcast.emit('deleteMessage', msg);
   });
 });
 

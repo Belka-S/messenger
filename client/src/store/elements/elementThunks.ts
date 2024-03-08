@@ -24,7 +24,7 @@ export const fetchElementsThunk = createAppAsyncThunk(
 );
 
 export const getElementThunk = createAppAsyncThunk(
-  'elements/fetchElements',
+  'elements/getElement',
   async (element: IMsg, thunkAPI) => {
     try {
       return await API.getElement(element);

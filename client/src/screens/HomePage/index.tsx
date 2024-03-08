@@ -3,9 +3,14 @@
 import classNames from 'classnames';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 import Section from '@/components/ui/Section';
+import { socket } from '@/servises/apiSocket.io';
 import { IUserInitialState } from '@/store/auth/initialState';
+import { addElement, updateElement } from '@/store/elements/elementSlice';
+import { fetchElementsThunk } from '@/store/elements/elementThunks';
+import { useAppDispatch } from '@/store/hooks';
 import { useAuth, useElements } from '@/utils/hooks';
 
 import Chat from './Chat';
@@ -23,18 +28,50 @@ export interface IMsg {
 
 const HomePage = () => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const { user, isAuth } = useAuth();
-  const { msgHistory } = useElements();
-  const [initialMsg, setInitialMsg] = useState<IMsg | null>(null);
-  const [msgArr, setMsgArr] = useState<IMsg[]>([]);
+  const { elements } = useElements();
   const [partner, setPartner] = useState<IUserInitialState>(user);
+  const [updatedMsg, setUpdatedMsg] = useState<IMsg | null>(null);
 
   useEffect(() => {
     isAuth ? router.push('/') : router.push('/signin');
   }, [isAuth, router]);
 
+  useEffect(() => {
+    dispatch(fetchElementsThunk());
+  }, [dispatch]);
+
+  useEffect(() => {
+    socket.on('chatMessage', async msg => {
+      if (elements.length === 0) {
+        await dispatch(fetchElementsThunk())
+          .unwrap()
+          .then(pld => console.log(pld))
+          .catch(err => toast.error(err.message));
+      } else {
+        const id = await msg.id;
+        const isNewMsg = !elements.some((el: IMsg) => el.id === id);
+        if (isNewMsg) {
+          dispatch(addElement(msg));
+        } else {
+          dispatch(updateElement(msg));
+        }
+      }
+    });
+  }, [dispatch, elements]);
+
+  useEffect(() => {
+    socket.on('deleteMessage', msg => {
+      dispatch(fetchElementsThunk())
+        .unwrap()
+        .then(pld => console.log(pld))
+        .catch(err => toast.error(err.message));
+    });
+  }, [dispatch]);
+
   const filterMsgs = (partner: IUserInitialState) => {
-    const filtredMsgs = [...msgHistory, ...msgArr].filter(el => {
+    const filtredMsgs = elements.filter((el: IMsg) => {
       return (
         (partner.email === el.partner && user.email === el.owner) ||
         (partner.email === el.owner && user.email === el.partner)
@@ -48,23 +85,22 @@ const HomePage = () => {
       <div className={classNames('container', s.home)}>
         <Section>
           <ChatForm
-            setMsgArr={setMsgArr}
             partner={partner}
-            initialMsg={initialMsg}
-            setInitialMsg={setInitialMsg}
+            updatedMsg={updatedMsg}
+            setUpdatedMsg={setUpdatedMsg}
           />
           <ChatUsers
-            filterMsgs={filterMsgs}
-            setPartner={setPartner}
             partner={partner}
+            setPartner={setPartner}
+            filterMsgs={filterMsgs}
           />
         </Section>
 
         <Section>
           <Chat
-            filterMsgs={filterMsgs}
             partner={partner}
-            setInitialMsg={setInitialMsg}
+            filterMsgs={filterMsgs}
+            setUpdatedMsg={setUpdatedMsg}
           />
         </Section>
       </div>
