@@ -10,7 +10,7 @@
     "node": ">=17.9.1"
   },
   "scripts": {
-    "start": "concurrently \"cross-env NODE_ENV=production\" \"nodemon src/serverHttp.js\" \"nodemon src/serverWs.js\"",
+    "start": "concurrently \"cross-env NODE_ENV=production\" \"nodemon src/serverWs.js\"",
     "dev": "concurrently \"cross-env NODE_ENV=development\" \"nodemon src/serverHttp.js\" \"nodemon src/serverWs.js\"",
     "watch": "cross-env NODE_ENV=development node src/serverHttp.js --watch",
     "lint": "eslint . --ext js",
