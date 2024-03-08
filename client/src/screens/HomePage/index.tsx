@@ -18,9 +18,6 @@ import ChatForm from './ChatForm';
 import ChatUsers from './ChatUsers';
 import s from './index.module.scss';
 
-console.log(process.env.NEXT_PUBLIC_PROD_BACK_URL);
-console.log(process.env.NEXT_PUBLIC_PROD_BACK_WS);
-
 export interface IMsg {
   id: string;
   createdAt: string;
