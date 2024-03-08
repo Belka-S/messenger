@@ -48,11 +48,13 @@ const Chat: FC<IChatProps> = ({ filterMsgs, partner, setUpdatedMsg }) => {
     formElInput.value = msg.message;
   };
 
+  const isPartner = user.email !== partner.email;
+
   return (
     <ul>
       <div className={s.chat__title}>
         <span>me</span>
-        <span>{partner.name}</span>
+        {isPartner && <span>{partner.name}</span>}
       </div>
       {filterMsgs(partner).map((msg: IMsg) => {
         const isMyMsg = msg.owner === user.email;
