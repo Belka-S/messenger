@@ -2,7 +2,9 @@ require('dotenv').config();
 
 const app = require('./app');
 
-const { PORT_HTTP = 4000 } = process.env;
+const { NODE_ENV, PROD_BACK_URL, DEV_BACK_URL, PORT_HTTP = 4000 } = process.env;
+
+console.log(NODE_ENV === 'production' ? PROD_BACK_URL : DEV_BACK_URL);
 
 /* eslint-disable no-console */
 (() => {
