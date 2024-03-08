@@ -1,4 +1,4 @@
-import { apiClient, token } from './apiClient';
+import { apiClient, token } from './apiHttp';
 
 export type Credentials = {
   name?: string;

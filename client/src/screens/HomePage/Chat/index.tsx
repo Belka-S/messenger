@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 
 import Button from '@/components/ui/Button';
 import SvgIcon from '@/components/ui/SvgIcon';
-import { socket } from '@/servises/apiSocket.io';
+import { socket } from '@/servises/apiWs';
 import { IUserInitialState } from '@/store/auth/initialState';
 import {
   deleteElementThunk,

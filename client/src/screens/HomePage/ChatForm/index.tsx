@@ -6,7 +6,7 @@ import { FC } from 'react';
 import { Resolver, SubmitHandler, useForm } from 'react-hook-form';
 
 import Button from '@/components/ui/Button';
-import { socket } from '@/servises/apiSocket.io';
+import { socket } from '@/servises/apiWs';
 import { IUserInitialState } from '@/store/auth/initialState';
 import { addElement, updateElement } from '@/store/elements/elementSlice';
 import { useAppDispatch } from '@/store/hooks';

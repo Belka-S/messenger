@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import Section from '@/components/ui/Section';
-import { socket } from '@/servises/apiSocket.io';
+import { socket } from '@/servises/apiWs';
 import { IUserInitialState } from '@/store/auth/initialState';
 import { addElement, updateElement } from '@/store/elements/elementSlice';
 import { fetchElementsThunk } from '@/store/elements/elementThunks';

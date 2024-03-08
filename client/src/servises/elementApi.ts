@@ -1,6 +1,6 @@
 import { IMsg } from '@/screens/HomePage';
 
-import { apiClient } from './apiClient';
+import { apiClient } from './apiHttp';
 
 export const fetchElements = async () => {
   const { data } = await apiClient.get('/elements');
