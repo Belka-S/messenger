@@ -1,19 +1,23 @@
-require('dotenv').config();
-const { createServer } = require('http');
+const express = require('express');
+const cors = require('cors');
 
-const { Server } = require('socket.io');
-
-// add element
 const { doc, setDoc } = require('firebase/firestore');
 
 const { Elements } = require('./db');
 
 const { PORT_WS = 5000 } = process.env;
 
-const httpServer = createServer();
-const io = new Server(httpServer, { cors: { origin: '*' } });
+const server = express()
+  .use(cors({ origin: '*' }))
+  .listen(PORT_WS, () => console.log(`  -> Server ws://localhost:${server.address().port}`));
 
-/* eslint-disable no-console */
+const io = require('socket.io')(server, {
+  cors: {
+    origins: '*:*',
+    methods: ['GET', 'POST'],
+  },
+});
+
 io.on('connection', socket => {
   // add, update element
   socket.on('chatMessage', msg => {
@@ -26,14 +30,3 @@ io.on('connection', socket => {
     socket.broadcast.emit('deleteMessage', msg);
   });
 });
-
-(() => {
-  try {
-    httpServer.listen(PORT_WS, () =>
-      console.log(`  -> Server ws://localhost:${httpServer.address().port}`),
-    );
-  } catch (error) {
-    console.log(error.message);
-    process.exit(1);
-  }
-})();
