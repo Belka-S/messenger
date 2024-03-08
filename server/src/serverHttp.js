@@ -8,7 +8,7 @@ const { PORT_HTTP = 4000 } = process.env;
 (() => {
   try {
     // console.info('  -> Connected to Firebase!');
-    app.listen(PORT_HTTP, () => console.log(`  -> Server http://localhost:${PORT_HTTP}/`));
+    app.listen(PORT_HTTP, () => console.log(`  -> Server http://localhost:${PORT_HTTP}`));
   } catch (error) {
     console.log(error.message);
     process.exit(1);
