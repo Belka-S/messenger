@@ -29,7 +29,9 @@ io.on('connection', socket => {
 
 (() => {
   try {
-    httpServer.listen(PORT_WS, () => console.log(`  -> Server WS:  http://localhost:${PORT_WS}/`));
+    httpServer.listen(PORT_WS, () =>
+      console.log(`  -> Server WS:  http://localhost:${httpServer.address().port}`),
+    );
   } catch (error) {
     console.log(error.message);
     process.exit(1);
