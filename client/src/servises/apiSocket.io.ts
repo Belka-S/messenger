@@ -7,4 +7,4 @@ const socketURL =
 
 console.log('socketURL: ', socketURL);
 
-export const socket = io(socketURL, { transports: ['websocket'] });
+export const socket = io(socketURL);
