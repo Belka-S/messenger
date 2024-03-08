@@ -10,7 +10,7 @@
 }
 
 .messenger {
-  margin: 0;
+  margin: 0 !important;
   fill: var(--accent-color);
 
   &:hover {
@@ -19,7 +19,7 @@
 }
 
 .active {
-  fill: #f39718;
+  fill: #f39718 !important;
 }
 
 .header__menu {
@@ -29,6 +29,6 @@
 }
 
 .header__menu_btn {
-  border-radius: 50%;
-  padding: 2px;
+  border-radius: 50% !important;
+  padding: 2px !important;
 }
