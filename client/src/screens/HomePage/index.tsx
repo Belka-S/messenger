@@ -83,7 +83,7 @@ const HomePage = () => {
   if (isAuth)
     return (
       <div className={classNames('container', s.home)}>
-        <Section>
+        <Section className={s.sidebar}>
           <ChatForm
             partner={partner}
             updatedMsg={updatedMsg}
@@ -95,6 +95,8 @@ const HomePage = () => {
             filterMsgs={filterMsgs}
           />
         </Section>
+
+        <span></span>
 
         <Section>
           <Chat

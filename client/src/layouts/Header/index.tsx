@@ -7,7 +7,7 @@ import { MouseEvent, useState } from 'react';
 import OvalLoader from '@/components/Loader/OvalLoader';
 import Button from '@/components/ui/Button';
 import SvgIcon from '@/components/ui/SvgIcon';
-import H2 from '@/components/ui/Typography/H2';
+import H3 from '@/components/ui/Typography/H3';
 import { logoutThunk } from '@/store/auth/authThunks';
 import { useAppDispatch } from '@/store/hooks';
 import { useAuth } from '@/utils/hooks';
@@ -38,7 +38,7 @@ const Header = () => {
             />
           </Link>
 
-          {isAuth && <H2 className={s.messenger}>Messenger</H2>}
+          {isAuth && <H3 className={s.messenger}>Messenger</H3>}
 
           <div className={s.header__menu}>
             {isAuth ? (

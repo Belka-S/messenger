@@ -1,17 +1,18 @@
 .chat__title {
   display: flex;
   justify-content: space-between;
-
-  & span {
-    font-weight: 700;
-    text-transform: capitalize;
-  }
 }
 
 .chat__msg {
   width: 100%;
   margin-bottom: var(--indent-s);
   display: flex;
+
+  & .owner {
+    padding-inline: 10px;
+    font-weight: 700;
+    text-transform: capitalize;
+  }
 }
 
 .left {

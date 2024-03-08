@@ -1,5 +1,15 @@
 .home {
+  margin-top: 85px;
+  margin-bottom: 40px;
+  margin-right: 40px;
   display: grid;
   grid-template-columns: 1fr 2fr;
   column-gap: 30px;
+}
+
+.sidebar {
+  width: 31%;
+  position: fixed;
+  top: 65px;
+  left: 40px;
 }

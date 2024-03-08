@@ -48,15 +48,14 @@ const Chat: FC<IChatProps> = ({ filterMsgs, partner, setUpdatedMsg }) => {
     formElInput.value = msg.message;
   };
 
-  const isPartner = user.email !== partner.email;
+  const filtredMsg = filterMsgs(partner).sort((a, b) =>
+    b.id.localeCompare(a.id),
+  );
 
   return (
     <ul>
-      <div className={s.chat__title}>
-        <span>me</span>
-        {isPartner && <span>{partner.name}</span>}
-      </div>
-      {filterMsgs(partner).map((msg: IMsg) => {
+      <div className={s.chat__title}></div>
+      {filtredMsg.map((msg: IMsg) => {
         const isMyMsg = msg.owner === user.email;
 
         return (
@@ -64,6 +63,7 @@ const Chat: FC<IChatProps> = ({ filterMsgs, partner, setUpdatedMsg }) => {
             className={classNames(s.chat__msg, isMyMsg ? s.left : s.right)}
             key={msg.id}
           >
+            {isMyMsg && <span className={s.owner}>me</span>}
             <div
               className={classNames(
                 s.chat__msg_wrap,
@@ -92,6 +92,7 @@ const Chat: FC<IChatProps> = ({ filterMsgs, partner, setUpdatedMsg }) => {
                 <span className={s.date}>{msg.createdAt}</span>
               </div>
             </div>
+            {!isMyMsg && <span className={s.owner}>{partner.name}</span>}
           </li>
         );
       })}
