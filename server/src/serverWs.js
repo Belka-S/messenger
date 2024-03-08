@@ -1,6 +1,6 @@
+
 require('dotenv').config();
 const express = require('express');
-// const cors = require('cors');
 
 const { doc, setDoc } = require('firebase/firestore');
 
@@ -9,6 +9,7 @@ const { Elements } = require('./db');
 const { PORT_WS = 5000 } = process.env;
 
 const server = express()
+
   // .use(cors({ origin: '*' }))
   .listen(PORT_WS, () => {
     console.log(`  -> Server ws://localhost:${server.address().port}`);
@@ -72,3 +73,4 @@ io.on('connection', socket => {
 //     process.exit(1);
 //   }
 // })();
+
