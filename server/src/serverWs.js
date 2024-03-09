@@ -38,9 +38,14 @@ io.on('connection', socket => {
   socket.on('deleteMessage', msg => {
     socket.broadcast.emit('deleteMessage', msg);
   });
+  // sign user
+  socket.on('joinUser', msg => {
+    socket.broadcast.emit('joinUser', msg);
+  });
+  socket.on('leftUser', msg => {
+    socket.broadcast.emit('leftUser', msg);
+  });
 });
-
-// const { createServer } = require('http');
 
 // const { Server } = require('socket.io');
 

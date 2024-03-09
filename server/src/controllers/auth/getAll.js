@@ -8,7 +8,10 @@ const getAll = ctrlWrapper(async (req, res) => {
 
   const users = usersList
     .filter(el => el.verifiedEmail)
-    .map(({ name, email }) => ({ name, email }));
+    .map(({ name, email, accessToken }) => {
+      const online = accessToken ? 'online' : null;
+      return { name, email, accessToken: online };
+    });
 
   res.status(200).json({ message: `Found ${users.length} users(s)`, result: { users } });
 });

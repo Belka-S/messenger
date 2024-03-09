@@ -8,6 +8,7 @@ import OvalLoader from '@/components/Loader/OvalLoader';
 import Button from '@/components/ui/Button';
 import SvgIcon from '@/components/ui/SvgIcon';
 import H3 from '@/components/ui/Typography/H3';
+import { socket } from '@/servises/apiWs';
 import { logoutThunk } from '@/store/auth/authThunks';
 import { useAppDispatch } from '@/store/hooks';
 import { useAuth } from '@/utils/hooks';
@@ -43,7 +44,10 @@ const Header = () => {
           <div className={s.header__menu}>
             {isAuth ? (
               <Button
-                onClick={() => dispatch(logoutThunk())}
+                onClick={() => {
+                  dispatch(logoutThunk());
+                  socket.emit('leftUser', user.email);
+                }}
                 type="button"
                 size="m"
                 variant="transparent"
