@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 
 import Button from '@/components/ui/Button';
 import { loginThunk } from '@/store/auth/authThunks';
+import { fetchElementsThunk } from '@/store/elements/elementThunks';
 import { useAppDispatch } from '@/store/hooks';
 import { useAuth } from '@/utils/hooks';
 import { signinSchema } from '@/utils/validation';
@@ -40,6 +41,7 @@ const SigninForm = () => {
     dispatch(loginThunk(data))
       .unwrap()
       .then(pld => pld.result.user.verifiedEmail && router.push('/'))
+      .then(() => dispatch(fetchElementsThunk()))
       .catch(err => err.includes('401') && toast.error('Unauthorized'));
   };
 

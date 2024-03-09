@@ -53,11 +53,12 @@ const ChatForm: FC<IChatFormProps> = props => {
     if (updatedMsg) {
       msg = { ...updatedMsg, message };
       dispatch(updateElement(msg));
+      socket.emit('updateMessage', msg);
     } else {
       dispatch(addElement(msg));
+      socket.emit('addMessage', msg);
     }
 
-    socket.emit('chatMessage', msg);
     setUpdatedMsg(null);
     reset();
   };

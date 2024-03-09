@@ -1,6 +1,6 @@
-
 require('dotenv').config();
 const express = require('express');
+// const cors = require('cors');
 
 const { doc, setDoc } = require('firebase/firestore');
 
@@ -9,7 +9,6 @@ const { Elements } = require('./db');
 const { PORT_WS = 5000 } = process.env;
 
 const server = express()
-
   // .use(cors({ origin: '*' }))
   .listen(PORT_WS, () => {
     console.log(`  -> Server ws://localhost:${server.address().port}`);
@@ -23,9 +22,15 @@ const io = require('socket.io')(server, {
 });
 
 io.on('connection', socket => {
-  // add, update element
-  socket.on('chatMessage', msg => {
-    socket.broadcast.emit('chatMessage', msg);
+  // add element
+  socket.on('addMessage', msg => {
+    socket.broadcast.emit('addMessage', msg);
+    const elRef = doc(Elements, msg.id);
+    setDoc(elRef, msg);
+  });
+  // update element
+  socket.on('updateMessage', msg => {
+    socket.broadcast.emit('addMessage', msg);
     const elRef = doc(Elements, msg.id);
     setDoc(elRef, msg);
   });
@@ -52,8 +57,8 @@ io.on('connection', socket => {
 // /* eslint-disable no-console */
 // io.on('connection', socket => {
 //   // add, update element
-//   socket.on('chatMessage', msg => {
-//     socket.broadcast.emit('chatMessage', msg);
+//   socket.on('addMessage', msg => {
+//     socket.broadcast.emit('addMessage', msg);
 //     const elRef = doc(Elements, msg.id);
 //     setDoc(elRef, msg);
 //   });
@@ -73,4 +78,3 @@ io.on('connection', socket => {
 //     process.exit(1);
 //   }
 // })();
-
