@@ -22,9 +22,15 @@ const io = require('socket.io')(server, {
 });
 
 io.on('connection', socket => {
-  // add, update element
-  socket.on('chatMessage', msg => {
-    socket.broadcast.emit('chatMessage', msg);
+  // add element
+  socket.on('addMessage', msg => {
+    socket.broadcast.emit('addMessage', msg);
+    const elRef = doc(Elements, msg.id);
+    setDoc(elRef, msg);
+  });
+  // update element
+  socket.on('updateMessage', msg => {
+    socket.broadcast.emit('addMessage', msg);
     const elRef = doc(Elements, msg.id);
     setDoc(elRef, msg);
   });
@@ -51,8 +57,8 @@ io.on('connection', socket => {
 // /* eslint-disable no-console */
 // io.on('connection', socket => {
 //   // add, update element
-//   socket.on('chatMessage', msg => {
-//     socket.broadcast.emit('chatMessage', msg);
+//   socket.on('addMessage', msg => {
+//     socket.broadcast.emit('addMessage', msg);
 //     const elRef = doc(Elements, msg.id);
 //     setDoc(elRef, msg);
 //   });

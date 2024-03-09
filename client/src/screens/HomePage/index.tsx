@@ -39,33 +39,25 @@ const HomePage = () => {
   }, [isAuth, router]);
 
   useEffect(() => {
-    dispatch(fetchElementsThunk());
-  }, [dispatch]);
-
-  useEffect(() => {
-    socket.on('chatMessage', async msg => {
-      if (elements.length === 0) {
-        await dispatch(fetchElementsThunk())
-          .unwrap()
-          .then(pld => console.log(pld))
-          .catch(err => toast.error(err.message));
-      } else {
-        const id = await msg.id;
-        const isNewMsg = !elements.some((el: IMsg) => el.id === id);
-        if (isNewMsg) {
-          dispatch(addElement(msg));
-        } else {
-          dispatch(updateElement(msg));
-        }
-      }
+    socket.once('addMessage', async msg => {
+      await dispatch(fetchElementsThunk())
+        .unwrap()
+        .catch(err => toast.error(err.message));
     });
   }, [dispatch, elements]);
 
   useEffect(() => {
-    socket.on('deleteMessage', msg => {
-      dispatch(fetchElementsThunk())
+    socket.on('updateMessage', async msg => {
+      await dispatch(fetchElementsThunk())
         .unwrap()
-        .then(pld => console.log(pld))
+        .catch(err => toast.error(err.message));
+    });
+  }, [dispatch]);
+
+  useEffect(() => {
+    socket.on('deleteMessage', async msg => {
+      await dispatch(fetchElementsThunk())
+        .unwrap()
         .catch(err => toast.error(err.message));
     });
   }, [dispatch]);
