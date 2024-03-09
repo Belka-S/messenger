@@ -8,6 +8,7 @@ import { Resolver, SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
 import Button from '@/components/ui/Button';
+import { socket } from '@/servises/apiWs';
 import { loginThunk } from '@/store/auth/authThunks';
 import { fetchElementsThunk } from '@/store/elements/elementThunks';
 import { useAppDispatch } from '@/store/hooks';
@@ -40,7 +41,11 @@ const SigninForm = () => {
   const onSubmit: SubmitHandler<Inputs> = data => {
     dispatch(loginThunk(data))
       .unwrap()
-      .then(pld => pld.result.user.verifiedEmail && router.push('/'))
+      .then(pld => {
+        const { email, verifiedEmail } = pld.result.user;
+        verifiedEmail && router.push('/');
+        socket.emit('joinUser', email);
+      })
       .then(() => dispatch(fetchElementsThunk()))
       .catch(err => err.includes('401') && toast.error('Unauthorized'));
   };

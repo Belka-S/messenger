@@ -24,7 +24,7 @@
 }
 
 .active {
-  fill: #f39718 !important;
+  fill: var(--active-color) !important;
 }
 
 .header__menu {

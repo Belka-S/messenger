@@ -7,6 +7,7 @@ import { Resolver, SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
 import Button from '@/components/ui/Button';
+import { socket } from '@/servises/apiWs';
 import { refreshUserThunk, verifyEmailThunk } from '@/store/auth/authThunks';
 import { useAppDispatch } from '@/store/hooks';
 import { useAuth } from '@/utils/hooks';
@@ -34,6 +35,7 @@ const CodeForm = () => {
   const onSubmit: SubmitHandler<Inputs> = data => {
     dispatch(verifyEmailThunk({ ...data, email: user.email }))
       .unwrap()
+      .then(pld => socket.emit('joinUser', pld.result.user.email))
       .then(() => dispatch(refreshUserThunk()))
       .then(() => router.push('/'))
       .catch(err => err.includes('401') && toast.error('Unauthorized'));

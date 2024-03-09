@@ -1,11 +1,14 @@
 'use client';
 
+import classNames from 'classnames';
 import { FC, useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 import Button from '@/components/ui/Button';
 import Section from '@/components/ui/Section';
 import H5 from '@/components/ui/Typography/H5';
 import H6 from '@/components/ui/Typography/H6';
+import { socket } from '@/servises/apiWs';
 import { getAllUsersThunk } from '@/store/auth/authThunks';
 import { IUserInitialState } from '@/store/auth/initialState';
 import { useAppDispatch } from '@/store/hooks';
@@ -27,9 +30,22 @@ const ChatUsers: FC<IChatUsersProps> = ({
 }) => {
   const dispatch = useAppDispatch();
   const { user, allUsers } = useAuth();
+  console.log('allUsers: ', allUsers);
 
   useEffect(() => {
     dispatch(getAllUsersThunk());
+  }, [dispatch]);
+
+  useEffect(() => {
+    socket.on('joinUser', async (msg: string) => {
+      await dispatch(getAllUsersThunk()); // .then(() => toast.success(`Joined: ${msg}`),);
+    });
+  }, [dispatch]);
+
+  useEffect(() => {
+    socket.on('leftUser', async (msg: string) => {
+      await dispatch(getAllUsersThunk()); // .then(() => toast.success(`Left: ${msg}`),);
+    });
   }, [dispatch]);
 
   return (
@@ -49,7 +65,14 @@ const ChatUsers: FC<IChatUsersProps> = ({
             >
               <H6 className={s.item__name} fontWeight={500}>{`${el.name}`}</H6>
 
-              <span className={s.users__count}>{filterMsgs(el).length}</span>
+              <span
+                className={classNames(
+                  s.users__count,
+                  el.accessToken && s.online,
+                )}
+              >
+                {filterMsgs(el).length}
+              </span>
 
               <Button
                 className={s.users__btn}

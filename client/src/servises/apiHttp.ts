@@ -11,7 +11,6 @@ export const baseURL =
 
 // axios instance
 const apiClient = axios.create({ baseURL });
-console.log('baseURL: ', baseURL);
 
 // set token
 const token = {

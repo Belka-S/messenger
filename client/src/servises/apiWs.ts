@@ -5,6 +5,4 @@ const socketURL =
     ? `${process.env.NEXT_PUBLIC_DEV_BACK_WS}`
     : `${process.env.NEXT_PUBLIC_PROD_BACK_WS}`;
 
-console.log('socketURL: ', socketURL);
-
 export const socket = io(socketURL);
