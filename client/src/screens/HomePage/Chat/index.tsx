@@ -52,49 +52,63 @@ const Chat: FC<IChatProps> = ({ filterMsgs, partner, setUpdatedMsg }) => {
     b.id.localeCompare(a.id),
   );
 
+  const isPartner = user.email !== partner.email;
+
   return (
     <ul>
       <div className={s.chat__title}></div>
       {filtredMsg.map((msg: IMsg) => {
         const isMyMsg = msg.owner === user.email;
 
-        return (
-          <li
-            className={classNames(s.chat__msg, isMyMsg ? s.left : s.right)}
-            key={msg.id}
-          >
-            {isMyMsg && <span className={s.owner}>me</span>}
-            <div
-              className={classNames(
-                s.chat__msg_wrap,
-                isMyMsg ? s.left : s.right,
-              )}
+        if (isPartner) {
+          return (
+            <li
+              className={classNames(s.chat__msg, isMyMsg ? s.left : s.right)}
+              key={msg.id}
             >
-              <p>{msg.message}</p>
-              <div className={s.date__wrap}>
-                <div>
-                  <Button
-                    variant="transparent"
-                    onClick={() => handleDeleteMsg(msg)}
-                  >
-                    <SvgIcon id="trash" width={16} height={16} />
-                  </Button>
-                  {isMyMsg && (
+              {isMyMsg && <span className={s.owner}>me</span>}
+              <div
+                className={classNames(
+                  s.chat__msg_wrap,
+                  isMyMsg ? s.left : s.right,
+                )}
+              >
+                <p>{msg.message}</p>
+
+                <div className={s.date__wrap}>
+                  <div>
                     <Button
                       variant="transparent"
-                      onClick={() => handleupdatedMsg(msg)}
+                      onClick={() => handleDeleteMsg(msg)}
                     >
-                      <SvgIcon id="edit" width={16} height={16} />
+                      <SvgIcon id="trash" width={16} height={16} />
                     </Button>
+                    {isMyMsg && (
+                      <Button
+                        variant="transparent"
+                        onClick={() => handleupdatedMsg(msg)}
+                      >
+                        <SvgIcon id="edit" width={16} height={16} />
+                      </Button>
+                    )}
+                  </div>
+                  {msg.fileUrl && (
+                    <a
+                      className={s.attachment}
+                      href={msg.fileUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      attachment
+                    </a>
                   )}
+                  <span className={s.date}>{msg.createdAt}</span>
                 </div>
-
-                <span className={s.date}>{msg.createdAt}</span>
               </div>
-            </div>
-            {!isMyMsg && <span className={s.owner}>{partner.name}</span>}
-          </li>
-        );
+              {!isMyMsg && <span className={s.owner}>{partner.name}</span>}
+            </li>
+          );
+        }
       })}
     </ul>
   );

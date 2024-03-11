@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import { useRouter } from 'next/navigation';
 import { Resolver, SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import { InferType } from 'yup';
 
 import Button from '@/components/ui/Button';
 import { socket } from '@/servises/apiWs';
@@ -16,9 +17,7 @@ import { verifySchema } from '@/utils/validation';
 import H4 from '../ui/Typography/H4';
 import s from './index.module.scss';
 
-type Inputs = {
-  verificationCode: string;
-};
+type Inputs = InferType<typeof verifySchema>;
 
 const CodeForm = () => {
   const dispatch = useAppDispatch();

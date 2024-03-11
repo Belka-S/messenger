@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Resolver, SubmitHandler, useForm } from 'react-hook-form';
-import { toast } from 'react-toastify';
+import { InferType } from 'yup';
 
 import Button from '@/components/ui/Button';
 import { registerThunk } from '@/store/auth/authThunks';
@@ -14,11 +14,7 @@ import { signupSchema } from '@/utils/validation';
 
 import s from './index.module.scss';
 
-type Inputs = {
-  name: string;
-  email: string;
-  password: string;
-};
+type Inputs = InferType<typeof signupSchema>;
 
 const SignupForm = () => {
   const dispatch = useAppDispatch();

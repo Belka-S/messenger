@@ -1,8 +1,9 @@
-const { elementHandler, userHandler } = require('./handlers');
+const { elementHandler, userHandler, fileHandler } = require('./handlers');
 
 const onConnection = socket => {
-  userHandler(socket);
   elementHandler(socket);
+  fileHandler(socket);
+  userHandler(socket);
 };
 
 module.exports = onConnection;

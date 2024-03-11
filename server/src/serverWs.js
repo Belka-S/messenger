@@ -16,6 +16,7 @@ const io = socket(server, {
     origins: '*:*',
     methods: ['GET', 'POST'],
   },
+  maxHttpBufferSize: 1e8, // 100 MB
 });
 
 io.on('connection', socket => {

@@ -38,18 +38,10 @@ const handleGetElement = (state: IMsg[], action: PayloadAction<any>) => {
   state.unshift(action.payload.result.element);
 };
 
-// const handleAddElement = (state: IMsg[], action: PayloadAction<any>) => {
-//   state.push(action.payload.result.element);
-// };
 const handleAddElement = (state: IMsg[], action: PayloadAction<any>) => {
   state.push(action.payload);
 };
 
-// const handleUpdateElement = (state: IMsg[], action: PayloadAction<any>) => {
-//   const { element } = action.payload.result;
-//   const index = state.findIndex(el => el.id === element.id);
-//   state.splice(index, 1, element);
-// };
 const handleUpdateElement = (state: IMsg[], action: PayloadAction<any>) => {
   const index = state.findIndex(el => el.id === action.payload.id);
   state.splice(index, 1, action.payload);
@@ -73,10 +65,10 @@ const elementItemsSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(TNK.fetchElementsThunk.fulfilled, handleFetchElements)
-      // .addCase(TNK.getElementThunk.fulfilled, handleGetElement)
-      // .addCase(TNK.addElementThunk.fulfilled, handleAddElement)
-      // .addCase(TNK.updateElementThunk.fulfilled, handleUpdateElement)
       .addCase(TNK.deleteElementThunk.fulfilled, handleDeleteElement);
+    // .addCase(TNK.getElementThunk.fulfilled, handleGetElement)
+    // .addCase(TNK.addElementThunk.fulfilled, handleAddElement)
+    // .addCase(TNK.updateElementThunk.fulfilled, handleUpdateElement)
   },
 });
 

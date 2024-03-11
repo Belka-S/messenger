@@ -30,7 +30,6 @@ const ChatUsers: FC<IChatUsersProps> = ({
 }) => {
   const dispatch = useAppDispatch();
   const { user, allUsers } = useAuth();
-  console.log('allUsers: ', allUsers);
 
   useEffect(() => {
     dispatch(getAllUsersThunk());
