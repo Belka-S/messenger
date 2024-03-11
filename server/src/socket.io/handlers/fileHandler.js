@@ -17,10 +17,11 @@ const fileHandler = socket => {
     try {
       await uploadBytes(fileRef, file, metadata);
       const fileUrl = await getDownloadURL(fileRef);
+      console.log('fileUrl: ', fileUrl);
       // getMetadata(fileRef)
       const msg = await getDocById(Elements, id);
       const elRef = doc(Elements, id);
-      setDoc(elRef, { ...msg, fileUrl });
+      await setDoc(elRef, { ...msg, fileUrl });
 
       socket.broadcast.emit('uploadFile', msg);
       socket.emit('uploadFile', msg);
@@ -29,9 +30,9 @@ const fileHandler = socket => {
     }
   });
   // delete file
-  // socket.on('deleteFile', msg => {
-  //   socket.broadcast.emit('deleteMessage', msg);
-  // });
+  socket.on('deleteFile', msg => {
+    socket.broadcast.emit('deleteMessage', msg);
+  });
 };
 
 module.exports = fileHandler;

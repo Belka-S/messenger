@@ -7,7 +7,7 @@ const Footer = () => {
     <footer className={s.footer}>
       <div className={classNames('container', s.footer__wrap)}>
         <a href="https://cv-it.vercel.app" target="blank">
-          developed by <span>BS</span>
+          built by <span>BS</span>
         </a>
       </div>
     </footer>
