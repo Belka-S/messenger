@@ -11,7 +11,7 @@ const elementHandler = socket => {
   });
   // update element
   socket.on('updateMessage', msg => {
-    socket.broadcast.emit('addMessage', msg);
+    socket.broadcast.emit('updateMessage', msg);
     const elRef = doc(Elements, msg.id);
     setDoc(elRef, msg);
   });

@@ -2,6 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const socket = require('socket.io');
 
+const onConnection = require('./socket.io/onConnection.js');
+
 const { PORT_WS = 5000 } = process.env;
 
 const server = express().listen(PORT_WS, () => {
@@ -14,9 +16,8 @@ const io = socket(server, {
     origins: '*:*',
     methods: ['GET', 'POST'],
   },
+  maxHttpBufferSize: 1e8, // 100 MB
 });
-
-const onConnection = require('./socket.io/onConnection.js');
 
 io.on('connection', socket => {
   onConnection(socket);

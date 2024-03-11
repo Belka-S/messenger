@@ -1,5 +1,6 @@
 const { initializeApp } = require('firebase/app');
 const { getFirestore, collection } = require('firebase/firestore');
+const { getStorage } = require('firebase/storage');
 
 const firebaseConfig = {
   apiKey: process.env.API_KEY,
@@ -13,9 +14,12 @@ const firebaseConfig = {
 
 initializeApp(firebaseConfig);
 
+// db
 const db = getFirestore();
-
 const Users = collection(db, 'Users');
 const Elements = collection(db, 'Elements');
 
-module.exports = { db, Users, Elements };
+// storage
+const storage = getStorage();
+
+module.exports = { db, Users, Elements, storage };

@@ -8,7 +8,6 @@ import { toast } from 'react-toastify';
 import Section from '@/components/ui/Section';
 import { socket } from '@/servises/apiWs';
 import { IUserInitialState } from '@/store/auth/initialState';
-import { addElement, updateElement } from '@/store/elements/elementSlice';
 import { fetchElementsThunk } from '@/store/elements/elementThunks';
 import { useAppDispatch } from '@/store/hooks';
 import { useAuth, useElements } from '@/utils/hooks';
@@ -24,6 +23,8 @@ export interface IMsg {
   owner: string;
   partner: string | null;
   message: string;
+  // file: File | null;
+  fileUrl: string | null;
 }
 
 const HomePage = () => {
@@ -39,7 +40,7 @@ const HomePage = () => {
   }, [isAuth, router]);
 
   useEffect(() => {
-    socket.once('addMessage', async msg => {
+    socket.on('addMessage', async msg => {
       await dispatch(fetchElementsThunk())
         .unwrap()
         .catch(err => toast.error(err.message));
@@ -56,6 +57,14 @@ const HomePage = () => {
 
   useEffect(() => {
     socket.on('deleteMessage', async msg => {
+      await dispatch(fetchElementsThunk())
+        .unwrap()
+        .catch(err => toast.error(err.message));
+    });
+  }, [dispatch]);
+
+  useEffect(() => {
+    socket.on('uploadFile', async msg => {
       await dispatch(fetchElementsThunk())
         .unwrap()
         .catch(err => toast.error(err.message));

@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Resolver, SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import { InferType } from 'yup';
 
 import Button from '@/components/ui/Button';
 import { socket } from '@/servises/apiWs';
@@ -17,10 +18,7 @@ import { signinSchema } from '@/utils/validation';
 
 import s from './index.module.scss';
 
-type Inputs = {
-  email: string;
-  password: string;
-};
+type Inputs = InferType<typeof signinSchema>;
 
 const SigninForm = () => {
   const dispatch = useAppDispatch();
