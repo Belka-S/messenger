@@ -17,14 +17,13 @@ const fileHandler = socket => {
     try {
       await uploadBytes(fileRef, file, metadata);
       const fileUrl = await getDownloadURL(fileRef);
-      // console.log('fileUrl: ', fileUrl);
       // getMetadata(fileRef)
-      // const msg = await getDocById(Elements, id);
-      // const elRef = doc(Elements, id);
-      // await setDoc(elRef, { ...msg, fileUrl });
+      const msg = await getDocById(Elements, id);
+      const elRef = doc(Elements, id);
+      await setDoc(elRef, { ...msg, fileUrl });
 
-      socket.broadcast.emit('uploadFile', fileUrl);
-      socket.emit('uploadFile', fileUrl);
+      socket.broadcast.emit('uploadFile', msg);
+      socket.emit('uploadFile', msg);
     } catch (err) {
       console.log(err.message);
     }
