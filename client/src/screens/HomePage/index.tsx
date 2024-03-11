@@ -66,7 +66,6 @@ const HomePage = () => {
     socket.on('uploadFile', async msg => {
       await dispatch(fetchElementsThunk())
         .unwrap()
-        .then(pld => console.log(pld))
         .catch(err => toast.error(err.message));
     });
   }, [dispatch]);
