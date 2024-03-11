@@ -29,9 +29,9 @@ const fileHandler = socket => {
     }
   });
   // delete file
-  // socket.on('deleteFile', msg => {
-  //   socket.broadcast.emit('deleteMessage', msg);
-  // });
+  socket.on('deleteFile', msg => {
+    socket.broadcast.emit('deleteMessage', msg);
+  });
 };
 
 module.exports = fileHandler;

@@ -52,16 +52,17 @@ const ChatForm: FC<IChatFormProps> = props => {
       owner: user.email,
       partner: partner.email,
       message,
-      // file: files && files[0] ? files[0] : null,
       fileUrl: null,
     };
     if (updatedMsg) {
       msg = { ...updatedMsg, message };
-      dispatch(updateElement(msg));
-      socket.emit('updateMessage', msg);
+      socket.emit('updateMessage', msg, (resp: string) => {
+        resp === 'ok' && dispatch(updateElement(msg));
+      });
     } else {
-      dispatch(addElement(msg));
-      socket.emit('addMessage', msg);
+      socket.emit('addMessage', msg, (resp: string) => {
+        resp === 'ok' && dispatch(addElement(msg));
+      });
     }
 
     // file

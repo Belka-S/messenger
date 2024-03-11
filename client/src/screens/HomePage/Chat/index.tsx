@@ -8,10 +8,8 @@ import Button from '@/components/ui/Button';
 import SvgIcon from '@/components/ui/SvgIcon';
 import { socket } from '@/servises/apiWs';
 import { IUserInitialState } from '@/store/auth/initialState';
-import {
-  deleteElementThunk,
-  fetchElementsThunk,
-} from '@/store/elements/elementThunks';
+import { deleteElement } from '@/store/elements/elementSlice';
+import { fetchElementsThunk } from '@/store/elements/elementThunks';
 import { useAppDispatch } from '@/store/hooks';
 import { useAuth } from '@/utils/hooks';
 
@@ -32,12 +30,11 @@ const Chat: FC<IChatProps> = ({ filterMsgs, partner, setUpdatedMsg }) => {
     if (!confirm('Are you sure you want to delete message?')) {
       return;
     }
-    dispatch(deleteElementThunk(el))
+    socket.emit('deleteMessage', el, (resp: string) => {
+      resp === 'ok' && dispatch(deleteElement(el));
+    });
+    dispatch(fetchElementsThunk())
       .unwrap()
-      .then(() => {
-        dispatch(fetchElementsThunk());
-        socket.emit('deleteMessage', el);
-      })
       .catch(err => toast.error(err.message));
   };
 

@@ -23,7 +23,6 @@ export interface IMsg {
   owner: string;
   partner: string | null;
   message: string;
-  // file: File | null;
   fileUrl: string | null;
 }
 

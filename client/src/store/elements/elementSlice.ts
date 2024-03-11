@@ -48,7 +48,7 @@ const handleUpdateElement = (state: IMsg[], action: PayloadAction<any>) => {
 };
 
 const handleDeleteElement = (state: IMsg[], action: PayloadAction<any>) => {
-  const { id } = action.payload.result;
+  const { id } = action.payload;
   state.filter(el => !id.includes(el.id));
 };
 
@@ -61,11 +61,11 @@ const elementItemsSlice = createSlice({
   reducers: {
     addElement: handleAddElement,
     updateElement: handleUpdateElement,
+    deleteElement: handleDeleteElement,
   },
   extraReducers: builder => {
-    builder
-      .addCase(TNK.fetchElementsThunk.fulfilled, handleFetchElements)
-      .addCase(TNK.deleteElementThunk.fulfilled, handleDeleteElement);
+    builder.addCase(TNK.fetchElementsThunk.fulfilled, handleFetchElements);
+    // .addCase(TNK.deleteElementThunk.fulfilled, handleDeleteElement)
     // .addCase(TNK.getElementThunk.fulfilled, handleGetElement)
     // .addCase(TNK.addElementThunk.fulfilled, handleAddElement)
     // .addCase(TNK.updateElementThunk.fulfilled, handleUpdateElement)
@@ -115,5 +115,6 @@ export const elementsReducer = combineReducers({
   error: elementErrorSlice.reducer,
 });
 
-export const { addElement, updateElement } = elementItemsSlice.actions;
+export const { addElement, updateElement, deleteElement } =
+  elementItemsSlice.actions;
 export const { setElementFilter } = elementFilterSlice.actions;
