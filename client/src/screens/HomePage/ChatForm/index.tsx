@@ -52,7 +52,6 @@ const ChatForm: FC<IChatFormProps> = props => {
       owner: user.email,
       partner: partner.email,
       message,
-      // file: files && files[0] ? files[0] : null,
       fileUrl: null,
     };
     if (updatedMsg) {

@@ -17,7 +17,6 @@ const fileHandler = socket => {
     try {
       await uploadBytes(fileRef, file, metadata);
       const fileUrl = await getDownloadURL(fileRef);
-      console.log('fileUrl: ', fileUrl);
       // getMetadata(fileRef)
       const msg = await getDocById(Elements, id);
       const elRef = doc(Elements, id);
