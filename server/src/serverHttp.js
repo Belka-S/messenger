@@ -4,7 +4,7 @@
 
 // const { PORT_HTTP = 4000 } = process.env;
 
-// /* eslint-disable no-console */
+/* eslint-disable no-console */
 // (() => {
 //   try {
 //     // console.info('  -> Connected to Firebase!');

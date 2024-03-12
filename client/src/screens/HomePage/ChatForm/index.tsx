@@ -53,6 +53,7 @@ const ChatForm: FC<IChatFormProps> = props => {
       partner: partner.email,
       message,
       fileUrl: null,
+      filePath: null,
     };
     if (updatedMsg) {
       msg = { ...updatedMsg, message };
