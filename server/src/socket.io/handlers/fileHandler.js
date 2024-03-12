@@ -8,7 +8,8 @@ const fileHandler = socket => {
   // upload file
   socket.on('uploadFile', async fileObj => {
     const { id, file, name, contentType, owner } = fileObj;
-    const fileRef = ref(storage, `${owner}/${name}`);
+    const filePath = `${owner}/${name}`;
+    const fileRef = ref(storage, filePath);
 
     const metadata = {
       contentType,
@@ -17,10 +18,11 @@ const fileHandler = socket => {
     try {
       await uploadBytes(fileRef, file, metadata);
       const fileUrl = await getDownloadURL(fileRef);
+
       // getMetadata(fileRef)
       const msg = await getDocById(Elements, id);
       const elRef = doc(Elements, id);
-      await setDoc(elRef, { ...msg, fileUrl });
+      await setDoc(elRef, { ...msg, fileUrl, filePath });
 
       socket.broadcast.emit('uploadFile', msg);
       socket.emit('uploadFile', msg);

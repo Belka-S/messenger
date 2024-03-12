@@ -3,12 +3,11 @@
 import classNames from 'classnames';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
 
 import Section from '@/components/ui/Section';
 import { socket } from '@/servises/apiWs';
 import { IUserInitialState } from '@/store/auth/initialState';
-import { fetchElementsThunk } from '@/store/elements/elementThunks';
+import { fetchElements } from '@/store/elements/elementSlice';
 import { useAppDispatch } from '@/store/hooks';
 import { useAuth, useElements } from '@/utils/hooks';
 
@@ -24,6 +23,7 @@ export interface IMsg {
   partner: string | null;
   message: string;
   fileUrl: string | null;
+  filePath: string | null;
 }
 
 const HomePage = () => {
@@ -40,33 +40,39 @@ const HomePage = () => {
 
   useEffect(() => {
     socket.on('addMessage', async msg => {
-      await dispatch(fetchElementsThunk())
-        .unwrap()
-        .catch(err => toast.error(err.message));
+      // await dispatch(fetchElementsThunk()).unwrap().catch(err => toast.error(err.message));
+      socket.emit('fetchMessages', 'all', (resp: any) => {
+        resp.docs && dispatch(fetchElements(resp.docs));
+      });
     });
   }, [dispatch, elements]);
 
   useEffect(() => {
     socket.on('updateMessage', async msg => {
-      await dispatch(fetchElementsThunk())
-        .unwrap()
-        .catch(err => toast.error(err.message));
+      console.log('msg: ', msg);
+      // await dispatch(fetchElementsThunk()).unwrap().catch(err => toast.error(err.message));
+      socket.emit('fetchMessages', 'all', (resp: any) => {
+        console.log('resp: ', resp);
+        resp.docs && dispatch(fetchElements(resp.docs));
+      });
     });
   }, [dispatch]);
 
   useEffect(() => {
     socket.on('deleteMessage', async msg => {
-      await dispatch(fetchElementsThunk())
-        .unwrap()
-        .catch(err => toast.error(err.message));
+      // await dispatch(fetchElementsThunk()).unwrap().catch(err => toast.error(err.message));
+      socket.emit('fetchMessages', 'all', (resp: any) => {
+        resp.docs && dispatch(fetchElements(resp.docs));
+      });
     });
   }, [dispatch]);
 
   useEffect(() => {
     socket.on('uploadFile', async msg => {
-      await dispatch(fetchElementsThunk())
-        .unwrap()
-        .catch(err => toast.error(err.message));
+      // await dispatch(fetchElementsThunk()).unwrap().catch(err => toast.error(err.message));
+      socket.emit('fetchMessages', 'all', (resp: any) => {
+        resp.docs && dispatch(fetchElements(resp.docs));
+      });
     });
   }, [dispatch]);
 

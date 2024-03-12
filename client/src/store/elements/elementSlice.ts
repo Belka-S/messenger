@@ -8,8 +8,6 @@ import {
 import { IMsg } from '@/screens/HomePage';
 import * as TNK from '@/store/elements/elementThunks';
 
-// import { IUserInitialState, userInitialState } from './initialState';
-
 const thunkArr = [
   TNK.fetchElementsThunk,
   TNK.getElementThunk,
@@ -30,12 +28,9 @@ const fn = (type: 'pending' | 'fulfilled' | 'rejected') =>
     }
   });
 
+// const handleFetchElements = (state: IMsg[], action: PayloadAction<any>) => { return action.payload.result.elements; };
 const handleFetchElements = (state: IMsg[], action: PayloadAction<any>) => {
-  return action.payload.result.elements;
-};
-
-const handleGetElement = (state: IMsg[], action: PayloadAction<any>) => {
-  state.unshift(action.payload.result.element);
+  return action.payload;
 };
 
 const handleAddElement = (state: IMsg[], action: PayloadAction<any>) => {
@@ -59,17 +54,18 @@ const elementItemsSlice = createSlice({
   name: 'items',
   initialState: [],
   reducers: {
+    fetchElements: handleFetchElements,
     addElement: handleAddElement,
     updateElement: handleUpdateElement,
     deleteElement: handleDeleteElement,
   },
-  extraReducers: builder => {
-    builder.addCase(TNK.fetchElementsThunk.fulfilled, handleFetchElements);
-    // .addCase(TNK.deleteElementThunk.fulfilled, handleDeleteElement)
-    // .addCase(TNK.getElementThunk.fulfilled, handleGetElement)
-    // .addCase(TNK.addElementThunk.fulfilled, handleAddElement)
-    // .addCase(TNK.updateElementThunk.fulfilled, handleUpdateElement)
-  },
+  // extraReducers: builder => {
+  //   builder.addCase(TNK.fetchElementsThunk.fulfilled, handleFetchElements);
+  // .addCase(TNK.deleteElementThunk.fulfilled, handleDeleteElement)
+  // .addCase(TNK.getElementThunk.fulfilled, handleGetElement)
+  // .addCase(TNK.addElementThunk.fulfilled, handleAddElement)
+  // .addCase(TNK.updateElementThunk.fulfilled, handleUpdateElement)
+  // },
 });
 
 // fulfilled filter slice
@@ -115,6 +111,6 @@ export const elementsReducer = combineReducers({
   error: elementErrorSlice.reducer,
 });
 
-export const { addElement, updateElement, deleteElement } =
+export const { fetchElements, addElement, updateElement, deleteElement } =
   elementItemsSlice.actions;
 export const { setElementFilter } = elementFilterSlice.actions;

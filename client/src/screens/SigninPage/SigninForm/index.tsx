@@ -11,6 +11,7 @@ import { InferType } from 'yup';
 import Button from '@/components/ui/Button';
 import { socket } from '@/servises/apiWs';
 import { loginThunk } from '@/store/auth/authThunks';
+import { deleteElement, fetchElements } from '@/store/elements/elementSlice';
 import { fetchElementsThunk } from '@/store/elements/elementThunks';
 import { useAppDispatch } from '@/store/hooks';
 import { useAuth } from '@/utils/hooks';
@@ -44,7 +45,12 @@ const SigninForm = () => {
         verifiedEmail && router.push('/');
         socket.emit('joinUser', email);
       })
-      .then(() => dispatch(fetchElementsThunk()))
+      .then(() => {
+        // dispatch(fetchElementsThunk());
+        socket.emit('fetchMessages', 'all', (resp: any) => {
+          resp.docs && dispatch(fetchElements(resp.docs));
+        });
+      })
       .catch(err => err.includes('401') && toast.error('Unauthorized'));
   };
 

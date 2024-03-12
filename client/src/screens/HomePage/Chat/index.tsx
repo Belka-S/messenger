@@ -8,8 +8,7 @@ import Button from '@/components/ui/Button';
 import SvgIcon from '@/components/ui/SvgIcon';
 import { socket } from '@/servises/apiWs';
 import { IUserInitialState } from '@/store/auth/initialState';
-import { deleteElement } from '@/store/elements/elementSlice';
-import { fetchElementsThunk } from '@/store/elements/elementThunks';
+import { deleteElement, fetchElements } from '@/store/elements/elementSlice';
 import { useAppDispatch } from '@/store/hooks';
 import { useAuth } from '@/utils/hooks';
 
@@ -31,11 +30,13 @@ const Chat: FC<IChatProps> = ({ filterMsgs, partner, setUpdatedMsg }) => {
       return;
     }
     socket.emit('deleteMessage', el, (resp: string) => {
+      console.log('resp: ', resp);
       resp === 'ok' && dispatch(deleteElement(el));
     });
-    dispatch(fetchElementsThunk())
-      .unwrap()
-      .catch(err => toast.error(err.message));
+    // dispatch(fetchElementsThunk()).unwrap().catch(err => toast.error(err.message));
+    socket.emit('fetchMessages', 'all', (resp: any) => {
+      resp.docs && dispatch(fetchElements(resp.docs));
+    });
   };
 
   const handleupdatedMsg = (msg: IMsg) => {
